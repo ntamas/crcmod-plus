@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools >= 61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crcmod-plus"
+version = "1.7.0"
+authors = [
+    {name = "Ray Buvel", email = "rlbuvel@gmail.com"}
+]
+description = "CRC generator - modernized"
+readme = "README.md"
+requires-python = ">=3.7"
+maintainers = [
+    {name = "Tamas Nepusz", email = "tamas@sxd.hu"}
+]
+license = {file = "LICENSE.txt"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: C",
+    "Programming Language :: C++",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications",
+    "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Repository = "https://github.com/ntamas/crcmod-plus"
+Changelog = "https://github.com/ntamas/crcmod-plus/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.tox]
+legacy_tox_ini = """
+    [tox]
+    min_version = 4.0
+    env_list =
+        py311
+        py310
+        py39
+        py38
+        py37
+        type
+
+    [testenv]
+    deps = pytest
+    commands = pytest tests
+
+    [testenv:type]
+    deps = mypy
+    commands = mypy src
+"""
+
