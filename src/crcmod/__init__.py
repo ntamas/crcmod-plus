@@ -14,5 +14,6 @@ all you need is a function for CRC calculation.
 """
 
 from .crcmod import Crc, mkCrcFun
+from ._version import __version__
 
-__all__ = ("Crc", "mkCrcFun")
+__all__ = ("Crc", "mkCrcFun", "__version__")
