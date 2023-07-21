@@ -56,7 +56,7 @@ typedef unsigned long long UINT64;
 #define GET_BUFFER_VIEW_OR_ERROUT(obj, viewp) do { \
         if (PyUnicode_Check((obj))) { \
             PyErr_SetString(PyExc_TypeError, \
-                            "Unicode-objects must be encoded before calculating a CRC");\
+                            "Strings must be encoded before calculating a CRC");\
             return NULL; \
         } \
         if (!PyObject_CheckBuffer((obj))) { \
