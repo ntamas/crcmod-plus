@@ -24,4 +24,3 @@ search = "__version_tuple__ = {current_version}"
 [[before_commit]]
 name = "Run tests"
 cmd = "tox && pre-commit run --all-files"
-

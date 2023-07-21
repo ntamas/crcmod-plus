@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Copyright (c) 2010 Craig McQueen
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -7,10 +7,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -18,26 +18,26 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-#-----------------------------------------------------------------------------
-'''
+# -----------------------------------------------------------------------------
+"""
 crcmod.predefined defines some well-known CRC algorithms.
 
 To use it, e.g.:
     import crcmod.predefined
-    
+
     crc32func = crcmod.predefined.mkPredefinedCrcFun("crc-32")
     crc32class = crcmod.predefined.PredefinedCrc("crc-32")
 
 crcmod.predefined.Crc is an alias for crcmod.predefined.PredefinedCrc
 But if doing 'from crc.predefined import *', only PredefinedCrc is imported.
-'''
+"""
 
 # local imports
 import crcmod
 
 __all__ = [
-    'PredefinedCrc',
-    'mkPredefinedCrcFun',
+    "PredefinedCrc",
+    "mkPredefinedCrcFun",
 ]
 
 REVERSE = True
@@ -113,10 +113,10 @@ def _simplify_name(name):
         * any initial "CRC" string removed
     """
     name = name.lower()
-    name = name.replace('-', '')
-    name = name.replace(' ', '')
-    if name.startswith('crc'):
-        name = name[len('crc'):]
+    name = name.replace("-", "")
+    name = name.replace(" ", "")
+    if name.startswith("crc"):
+        name = name[len("crc") :]
     return name
 
 
@@ -124,7 +124,15 @@ _crc_definitions_by_name = {}
 _crc_definitions_by_identifier = {}
 _crc_definitions = []
 
-_crc_table_headings = [ 'name', 'identifier', 'poly', 'reverse', 'init', 'xor_out', 'check' ]
+_crc_table_headings = [
+    "name",
+    "identifier",
+    "poly",
+    "reverse",
+    "init",
+    "xor_out",
+    "check",
+]
 
 for table_entry in _crc_definitions_table:
     crc_definition = dict(zip(_crc_table_headings, table_entry))
@@ -148,7 +156,12 @@ def _get_definition_by_name(crc_name):
 class PredefinedCrc(crcmod.Crc):
     def __init__(self, crc_name):
         definition = _get_definition_by_name(crc_name)
-        super().__init__(poly=definition['poly'], initCrc=definition['init'], rev=definition['reverse'], xorOut=definition['xor_out'])
+        super().__init__(
+            poly=definition["poly"],
+            initCrc=definition["init"],
+            rev=definition["reverse"],
+            xorOut=definition["xor_out"],
+        )
 
 
 # crcmod.predefined.Crc is an alias for crcmod.predefined.PredefinedCrc
@@ -157,7 +170,12 @@ Crc = PredefinedCrc
 
 def mkPredefinedCrcFun(crc_name):
     definition = _get_definition_by_name(crc_name)
-    return crcmod.mkCrcFun(poly=definition['poly'], initCrc=definition['init'], rev=definition['reverse'], xorOut=definition['xor_out'])
+    return crcmod.mkCrcFun(
+        poly=definition["poly"],
+        initCrc=definition["init"],
+        rev=definition["reverse"],
+        xorOut=definition["xor_out"],
+    )
 
 
 # crcmod.predefined.mkCrcFun is an alias for crcmod.predefined.mkPredefinedCrcFun

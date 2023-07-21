@@ -34,6 +34,8 @@ from crcmod.predefined import PredefinedCrc
 from crcmod.predefined import mkPredefinedCrcFun
 from crcmod.predefined import _crc_definitions as _predefined_crc_definitions
 
+from functools import total_ordering
+
 
 # -----------------------------------------------------------------------------
 # This polynomial was chosen because it is the product of two irreducible
@@ -156,6 +158,7 @@ g64b = polyFromBits(
 # implementation using polynomial division.
 
 
+@total_ordering
 class poly:
     """Class implementing polynomials over the field of integers mod 2"""
 
@@ -176,8 +179,8 @@ class poly:
 
     # To allow sorting of polynomials, use their long integer form for
     # comparison
-    def __cmp__(self, other):
-        return cmp(self.p, other.p)
+    def __lt__(self, other):
+        return self.p < other.p
 
     def __bool__(self):
         return self.p != 0
@@ -588,9 +591,9 @@ class PredefinedCrcTest(unittest.TestCase):
                     v[i],
                     "Wrong state for crc1 %s, input '%s'" % (crcfun_name, msg),
                 )
-                # Check that the new class instance created by .new() contains the initialisation value.
-                # This depends on the first string in self.test_messages_for_known_answers being
-                # the empty string.
+                # Check that the new class instance created by .new() contains
+                # the initialisation value. This depends on the first string in
+                # self.test_messages_for_known_answers being the empty string.
                 self.assertEqual(
                     crc2.crcValue,
                     v[0],
@@ -598,7 +601,8 @@ class PredefinedCrcTest(unittest.TestCase):
                 )
 
                 crc2.update(msg)
-                # Check that crc1 maintains its same value, after crc2 has called .update()
+                # Check that crc1 maintains its same value, after crc2 has
+                # called .update()
                 self.assertEqual(
                     crc1.crcValue,
                     v[i],

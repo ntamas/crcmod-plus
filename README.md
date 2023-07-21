@@ -78,4 +78,3 @@ file for details.
 ## Contributors
 
 Craig McQueen
-

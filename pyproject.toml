@@ -46,6 +46,9 @@ Changelog = "https://github.com/ntamas/crcmod-plus/blob/main/CHANGELOG.md"
 [project.optional-dependencies]
 dev = ["pytest"]
 
+[tool.ruff.extend-per-file-ignores]
+"predefined.py" = ["E501"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
@@ -69,4 +72,3 @@ legacy_tox_ini = """
     deps = mypy
     commands = mypy src
 """
-

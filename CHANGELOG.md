@@ -9,4 +9,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This is a modernised re-release of `crcmod` 1.7 from PyPI with no changes in
 API or behaviour.
-

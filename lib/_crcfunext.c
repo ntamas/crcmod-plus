@@ -13,10 +13,10 @@
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -598,7 +598,7 @@ static struct PyModuleDef moduleDef = {
 PyMODINIT_FUNC
 PyInit__crcfunext(void)
 {
-    if ((sizeof(UINT8) != 1) || (sizeof(UINT16) != 2) || 
+    if ((sizeof(UINT8) != 1) || (sizeof(UINT16) != 2) ||
         (sizeof(UINT32) != 4) || (sizeof(UINT64) != 8))
     {
         Py_FatalError("crcfunext: One of the data types is invalid");
@@ -606,4 +606,3 @@ PyInit__crcfunext(void)
 
     return PyModule_Create(&moduleDef);
 }
-

@@ -1,5 +1,5 @@
 """crcmod is a Python module for generating objects that compute the Cyclic
-Redundancy Check.  Any 8, 16, 24, 32, or 64 bit polynomial can be used.  
+Redundancy Check.  Any 8, 16, 24, 32, or 64 bit polynomial can be used.
 
 The following are the public components of this module.
 
