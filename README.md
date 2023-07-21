@@ -1,4 +1,22 @@
-# crcmod for Calculating CRCs
+[![Build status](https://github.com/ntamas/crcmod-plus/actions/workflows/build.yml/badge.svg)](https://github.com/ntamas/crcmod-plus/actions/workflows/build.yml)
+
+# `crcmod` for calculating CRCs
+
+The software in this repository is a modernised version of the `crcmod` Python
+package, originally written by Ray Buvel. I took the original source code of
+`crcmod` 1.7, dropped support for Python 2, reformatted the source files with
+`black`, ran it through `ruff`, and added a modern build pipeline around it
+based on `setuptools`, `pytest`, `tox` and `cibuildwheel` so I can create
+pre-compiled wheels for the package using Github Actions.
+
+Version 2.0.0 of this package is a drop-in replacement for `crcmod` 1.7 if
+you are running Python 3.7 or later.
+
+The contents of the original README file follows from here, with minor
+alterations to the building and testing instructions to describe how it is done
+now with the new setup.
+
+---
 
 The software in this package is a Python module for generating objects that
 compute the Cyclic Redundancy Check (CRC).  There is no attempt in this package
@@ -18,8 +36,8 @@ C/C++ source code that can be used in another application.
 Documentation is available from the doc strings.  It is up to you to decide
 what polynomials to use in your application.  If someone has not specified the
 polynomials to use, you will need to do some research to find one suitable for
-your application.  Examples are available in the unit test script `test.py`.
-You may also use the `predefined` module to select one of the standard
+your application.  Examples are available in the unit tests in the `tests`
+folder.  You may also use the `predefined` module to select one of the standard
 polynomials.
 
 If you need to generate code for another language, I suggest you subclass the
@@ -36,45 +54,43 @@ This package supports Python 3.7 and newer.
 
 To build the C extension, the appropriate compiler tools for your platform must
 be installed. Refer to the Python documentation for building C extensions for
-details.
+details. If you have a C compiler and all the usual Python development tools,
+including the `build` frontend, then running `python -m build` should build the
+package.
 
 ## Installation
 
-The crcmod package is installed using `pip`. Run the following command:
+The `crcmod-plus` package is installed from PyPI using `pip`. Run the following
+command:
 
 ```sh
-$ pip install crcmod
+$ pip install crcmod-plus
 ```
 
 ## Unit testing
 
-The `crcmod` package has a module `crcmod.test`, which contains unit
-tests for both `crcmod` and `crcmod.predefined`.
-
-When you first install `crcmod`, you should run the unit tests to make sure
-everything is installed properly.  The test script performs a number of tests
-including a comparison to the direct method which uses a class implementing
-polynomials over the integers mod 2.
-
-To run the unit tests:
+`crcmod-plus` uses `pytest` as the testing environment. You can run the unit
+tests with:
 
 ```sh
-$ python -m crcmod.test
+$ pytest tests
 ```
 
 ## Code generation
 
 The `crcmod` package is capable of generating C functions that can be compiled
-with a C or C++ compiler.  In the test directory, there is an `examples.py`
+with a C or C++ compiler.  In the `tests` directory, there is an `examples.py`
 script that demonstrates how to use the code generator.  The result of this is
 written out to the file `examples.c`.  The generated code was checked to make
 sure it compiles with the GCC compiler.
 
 ## License
 
-The `crcmod` package is released under the MIT license. See the `LICENSE`
+The `crcmod-plus` package is released under the MIT license. See the `LICENSE`
 file for details.
 
 ## Contributors
 
-Craig McQueen
+Craig McQueen (to the original `crcmod` package)
+Tamas Nepusz (modernisation into `crcmod-plus`)
+
