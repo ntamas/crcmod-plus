@@ -93,4 +93,3 @@ file for details.
 
 * Craig McQueen (to the original `crcmod` package)
 * Tamas Nepusz (modernisation into `crcmod-plus`)
-
