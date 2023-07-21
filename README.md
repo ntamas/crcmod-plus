@@ -91,6 +91,6 @@ file for details.
 
 ## Contributors
 
-Craig McQueen (to the original `crcmod` package)
-Tamas Nepusz (modernisation into `crcmod-plus`)
+* Craig McQueen (to the original `crcmod` package)
+* Tamas Nepusz (modernisation into `crcmod-plus`)
 
