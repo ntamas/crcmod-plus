@@ -35,7 +35,7 @@ But if doing 'from crc.predefined import *', only PredefinedCrc is imported.
 # local imports
 import crcmod
 
-from typing import Any
+from typing import Any, Dict, List, Tuple
 
 from .types import CrcFun
 
@@ -48,13 +48,13 @@ REVERSE = True
 NON_REVERSE = False
 
 # TODO(ntamas): migrate to TypedDict when we drop support for Python 3.7
-Definition = dict[str, Any]
+Definition = Dict[str, Any]
 
 # The following table defines the parameters of well-known CRC algorithms.
 # The "Check" value is the CRC for the ASCII byte sequence b"123456789". It
 # can be used for unit tests.
 # fmt: off
-_crc_definitions_table: list[tuple[str, str, int, bool, int, int, int]] = [
+_crc_definitions_table: List[Tuple[str, str, int, bool, int, int, int]] = [
 #       Name                Identifier-name,    Poly            Reverse         Init-value      XOR-out     Check
     (   'crc-8',            'Crc8',             0x107,          NON_REVERSE,    0x00,           0x00,       0xF4,       ),
     (   'crc-8-darc',       'Crc8Darc',         0x139,          REVERSE,        0x00,           0x00,       0x15,       ),
@@ -127,11 +127,11 @@ def _simplify_name(name: str) -> str:
     return name
 
 
-_crc_definitions_by_name: dict[str, Definition] = {}
-_crc_definitions_by_identifier: dict[str, Definition] = {}
-_crc_definitions: list[Definition] = []
+_crc_definitions_by_name: Dict[str, Definition] = {}
+_crc_definitions_by_identifier: Dict[str, Definition] = {}
+_crc_definitions: List[Definition] = []
 
-_crc_table_headings: list[str] = [
+_crc_table_headings: List[str] = [
     "name",
     "identifier",
     "poly",

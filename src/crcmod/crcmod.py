@@ -37,7 +37,7 @@ except ImportError:
 
 import struct
 
-from typing import IO, Optional, Sequence
+from typing import Dict, IO, List, Optional, Sequence, Tuple
 
 from .types import Buffer, CrcFun, CrcFunNoDefaultArgs
 
@@ -88,7 +88,7 @@ class Crc:
     crcValue: int
 
     _crc: CrcFun
-    table: list[int]
+    table: List[int]
 
     def __init__(
         self,
@@ -118,7 +118,7 @@ class Crc:
         self.crcValue = self.initCrc
 
     def __str__(self) -> str:
-        lst: list[str] = []
+        lst: List[str] = []
         lst.append("poly = 0x%X" % self.poly)
         lst.append("reverse = %s" % self.reverse)
         fmt = "0x%%0%dX" % (self.digest_size * 2)
@@ -168,7 +168,7 @@ class Crc:
         """
         n = self.digest_size
         crc = self.crcValue
-        lst: list[int] = []
+        lst: List[int] = []
         while n > 0:
             lst.append(crc & 0xFF)
             crc = crc >> 8
@@ -182,7 +182,7 @@ class Crc:
         """
         n = self.digest_size
         crc = self.crcValue
-        lst: list[str] = []
+        lst: List[str] = []
         while n > 0:
             lst.append("%02X" % (crc & 0xFF))
             crc = crc >> 8
@@ -243,7 +243,7 @@ class Crc:
         # Select the number of entries per row in the output code.
         n = {1: 8, 2: 8, 3: 4, 4: 4, 8: 2}[self.digest_size]
 
-        lst: list[str] = []
+        lst: List[str] = []
         for i, val in enumerate(self.table):
             if (i % n) == 0:
                 lst.append("\n    ")
@@ -371,14 +371,14 @@ def _bytecrc_r(crc: int, poly: int, n: int) -> int:
 # have been checked for validity by the caller.
 
 
-def _mkTable(poly: int, n: int) -> list[int]:
+def _mkTable(poly: int, n: int) -> List[int]:
     mask = (1 << n) - 1
     poly = poly & mask
     table = [_bytecrc(i << (n - 8), poly, n) for i in range(256)]
     return table
 
 
-def _mkTable_r(poly: int, n: int) -> list[int]:
+def _mkTable_r(poly: int, n: int) -> List[int]:
     mask = (1 << n) - 1
     poly = _bitrev(poly & mask, n)
     table = [_bytecrc_r(i, poly, n) for i in range(256)]
@@ -388,7 +388,7 @@ def _mkTable_r(poly: int, n: int) -> list[int]:
 # -----------------------------------------------------------------------------
 # Map the CRC size onto the functions that handle these sizes.
 
-_sizeMap: dict[int, tuple[CrcFunNoDefaultArgs, CrcFunNoDefaultArgs]] = {
+_sizeMap: Dict[int, Tuple[CrcFunNoDefaultArgs, CrcFunNoDefaultArgs]] = {
     8: (_crcfun._crc8, _crcfun._crc8r),
     16: (_crcfun._crc16, _crcfun._crc16r),
     24: (_crcfun._crc24, _crcfun._crc24r),
@@ -402,7 +402,7 @@ _sizeMap: dict[int, tuple[CrcFunNoDefaultArgs, CrcFunNoDefaultArgs]] = {
 # code to use for the platform we are running on.  This should properly adapt
 # to 32 and 64 bit machines.
 
-_sizeToTypeCode: dict[int, str] = {}
+_sizeToTypeCode: Dict[int, str] = {}
 
 for typeCode in "B H I L Q".split():
     size = {1: 8, 2: 16, 4: 32, 8: 64}.get(struct.calcsize(typeCode), None)
@@ -419,7 +419,7 @@ del typeCode, size  # type: ignore
 # It returns the size of the CRC (in bits), and "sanitized" initial/final XOR values.
 
 
-def _verifyParams(poly: int, initCrc: int, xorOut: int) -> tuple[int, int, int]:
+def _verifyParams(poly: int, initCrc: int, xorOut: int) -> Tuple[int, int, int]:
     sizeBits = _verifyPoly(poly)
 
     mask = (1 << sizeBits) - 1
@@ -448,7 +448,7 @@ def _verifyParams(poly: int, initCrc: int, xorOut: int) -> tuple[int, int, int]:
 
 def _mkCrcFun(
     poly: int, sizeBits: int, initCrc: int, rev: bool, xorOut: int
-) -> tuple[CrcFun, list[int]]:
+) -> Tuple[CrcFun, List[int]]:
     if rev:
         tableList = _mkTable_r(poly, sizeBits)
         _fun = _sizeMap[sizeBits][1]
