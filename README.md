@@ -89,7 +89,12 @@ sure it compiles with the GCC compiler.
 The `crcmod-plus` package is released under the MIT license. See the `LICENSE`
 file for details.
 
+## Authors
+
+* Ray Buvel (the original `crcmod` package)
+
 ## Contributors
 
-* Craig McQueen (to the original `crcmod` package)
+* Craig McQueen (contributor of the original `crcmod` package)
 * Tamas Nepusz (modernisation into `crcmod-plus`)
+
