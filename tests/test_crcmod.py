@@ -442,7 +442,7 @@ class CompareReferenceCrcTest(unittest.TestCase):
         that of binascii.crc32."""
         # The following function should produce the same result as
         # self.reference_crc32 which is derived from binascii.crc32.
-        crc32 = mkCrcFun(g32, 0, 1, 0xFFFFFFFF)
+        crc32 = mkCrcFun(g32, 0, True, 0xFFFFFFFF)
 
         for msg in self.test_messages:
             self.assertEqual(crc32(msg), self.reference_crc32(msg))

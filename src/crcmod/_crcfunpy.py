@@ -26,8 +26,12 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
+from typing import Sequence
 
-def _get_buffer_view(in_obj):
+from .types import Buffer
+
+
+def _get_buffer_view(in_obj: Buffer) -> memoryview:
     if isinstance(in_obj, str):
         raise TypeError("Unicode-objects must be encoded before calculating a CRC")
     mv = memoryview(in_obj)
@@ -36,7 +40,7 @@ def _get_buffer_view(in_obj):
     return mv
 
 
-def _crc8(data, crc, table):
+def _crc8(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFF
     for x in mv.tobytes():
@@ -44,7 +48,7 @@ def _crc8(data, crc, table):
     return crc
 
 
-def _crc8r(data, crc, table):
+def _crc8r(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFF
     for x in mv.tobytes():
@@ -52,7 +56,7 @@ def _crc8r(data, crc, table):
     return crc
 
 
-def _crc16(data, crc, table):
+def _crc16(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFF
     for x in mv.tobytes():
@@ -60,7 +64,7 @@ def _crc16(data, crc, table):
     return crc
 
 
-def _crc16r(data, crc, table):
+def _crc16r(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFF
     for x in mv.tobytes():
@@ -68,7 +72,7 @@ def _crc16r(data, crc, table):
     return crc
 
 
-def _crc24(data, crc, table):
+def _crc24(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFFFF
     for x in mv.tobytes():
@@ -76,7 +80,7 @@ def _crc24(data, crc, table):
     return crc
 
 
-def _crc24r(data, crc, table):
+def _crc24r(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFFFF
     for x in mv.tobytes():
@@ -84,7 +88,7 @@ def _crc24r(data, crc, table):
     return crc
 
 
-def _crc32(data, crc, table):
+def _crc32(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFFFFFF
     for x in mv.tobytes():
@@ -92,7 +96,7 @@ def _crc32(data, crc, table):
     return crc
 
 
-def _crc32r(data, crc, table):
+def _crc32r(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFFFFFF
     for x in mv.tobytes():
@@ -100,7 +104,7 @@ def _crc32r(data, crc, table):
     return crc
 
 
-def _crc64(data, crc, table):
+def _crc64(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFFFFFFFFFFFFFF
     for x in mv.tobytes():
@@ -108,7 +112,7 @@ def _crc64(data, crc, table):
     return crc
 
 
-def _crc64r(data, crc, table):
+def _crc64r(data: Buffer, crc: int, table: Sequence[int]) -> int:
     mv = _get_buffer_view(data)
     crc = crc & 0xFFFFFFFFFFFFFFFF
     for x in mv.tobytes():

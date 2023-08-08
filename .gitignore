@@ -2,6 +2,7 @@
 .ruff_cache/
 .tox/
 .venv/
+.vscode/
 __pycache__/
 dist/
 *.egg-info/

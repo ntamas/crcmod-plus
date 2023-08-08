@@ -37,6 +37,10 @@ except ImportError:
 
 import struct
 
+from typing import IO, Optional, Sequence
+
+from .types import Buffer, CrcFun, CrcFunNoDefaultArgs
+
 
 # -----------------------------------------------------------------------------
 class Crc:
@@ -75,7 +79,25 @@ class Crc:
     CRC algorithms.  Defaults to zero.
     """
 
-    def __init__(self, poly, initCrc=~0, rev=True, xorOut=0, initialize=True):
+    digest_size: int
+    initCrc: int
+    poly: int
+    reverse: bool
+    xorOut: int
+
+    crcValue: int
+
+    _crc: CrcFun
+    table: list[int]
+
+    def __init__(
+        self,
+        poly: int,
+        initCrc: int = ~0,
+        rev: bool = True,
+        xorOut: int = 0,
+        initialize: bool = True,
+    ):
         if not initialize:
             # Don't want to perform the initialization when using new or copy
             # to create a new instance.
@@ -95,8 +117,8 @@ class Crc:
 
         self.crcValue = self.initCrc
 
-    def __str__(self):
-        lst = []
+    def __str__(self) -> str:
+        lst: list[str] = []
         lst.append("poly = 0x%X" % self.poly)
         lst.append("reverse = %s" % self.reverse)
         fmt = "0x%%0%dX" % (self.digest_size * 2)
@@ -105,13 +127,13 @@ class Crc:
         lst.append("crcValue = %s" % (fmt % self.crcValue))
         return "\n".join(lst)
 
-    def new(self, arg=None):
+    def new(self, arg: Optional[Buffer] = None) -> "Crc":
         """Create a new instance of the Crc class initialized to the same
         values as the original instance.  The current CRC is set to the initial
         value.  If a string is provided in the optional arg parameter, it is
         passed to the update method.
         """
-        n = Crc(poly=None, initialize=False)
+        n = Crc(poly=None, initialize=False)  # type: ignore
         n._crc = self._crc
         n.digest_size = self.digest_size
         n.initCrc = self.initCrc
@@ -124,7 +146,7 @@ class Crc:
             n.update(arg)
         return n
 
-    def copy(self):
+    def copy(self) -> "Crc":
         """Create a new instance of the Crc class initialized to the same
         values as the original instance.  The current CRC is set to the current
         value.  This allows multiple CRC calculations using a common initial
@@ -134,19 +156,19 @@ class Crc:
         c.crcValue = self.crcValue
         return c
 
-    def update(self, data):
+    def update(self, data: Buffer) -> None:
         """Update the current CRC value using the string specified as the data
         parameter.
         """
-        self.crcValue = self._crc(data, self.crcValue)
+        self.crcValue = self._crc(data, self.crcValue)  # type: ignore
 
-    def digest(self):
+    def digest(self) -> bytes:
         """Return the current CRC value as a string of bytes.  The length of
         this string is specified in the digest_size attribute.
         """
         n = self.digest_size
         crc = self.crcValue
-        lst = []
+        lst: list[int] = []
         while n > 0:
             lst.append(crc & 0xFF)
             crc = crc >> 8
@@ -154,13 +176,13 @@ class Crc:
         lst.reverse()
         return bytes(lst)
 
-    def hexdigest(self):
+    def hexdigest(self) -> str:
         """Return the current CRC value as a string of hex digits.  The length
         of this string is twice the digest_size attribute.
         """
         n = self.digest_size
         crc = self.crcValue
-        lst = []
+        lst: list[str] = []
         while n > 0:
             lst.append("%02X" % (crc & 0xFF))
             crc = crc >> 8
@@ -168,7 +190,13 @@ class Crc:
         lst.reverse()
         return "".join(lst)
 
-    def generateCode(self, functionName, out, dataType=None, crcType=None):
+    def generateCode(
+        self,
+        functionName: str,
+        out: IO[str],
+        dataType: Optional[str] = None,
+        crcType: Optional[str] = None,
+    ) -> None:
         """Generate a C/C++ function.
 
         functionName -- String specifying the name of the function.
@@ -215,7 +243,7 @@ class Crc:
         # Select the number of entries per row in the output code.
         n = {1: 8, 2: 8, 3: 4, 4: 4, 8: 2}[self.digest_size]
 
-        lst = []
+        lst: list[str] = []
         for i, val in enumerate(self.table):
             if (i % n) == 0:
                 lst.append("\n    ")
@@ -255,7 +283,7 @@ class Crc:
 
 
 # -----------------------------------------------------------------------------
-def mkCrcFun(poly, initCrc=~0, rev=True, xorOut=0):
+def mkCrcFun(poly: int, initCrc: int = ~0, rev: bool = True, xorOut: int = 0) -> CrcFun:
     """Return a function that computes the CRC using the specified polynomial.
 
     poly -- integer representation of the generator polynomial
@@ -283,7 +311,7 @@ def mkCrcFun(poly, initCrc=~0, rev=True, xorOut=0):
 # of bits in the CRC.
 
 
-def _verifyPoly(poly):
+def _verifyPoly(poly: int) -> int:
     msg = "The degree of the polynomial must be 8, 16, 24, 32 or 64"
     for n in (8, 16, 24, 32, 64):
         low = 1 << n
@@ -297,7 +325,7 @@ def _verifyPoly(poly):
 # Bit reverse the input value.
 
 
-def _bitrev(x, n):
+def _bitrev(x: int, n: int) -> int:
     y = 0
     for i in range(n):
         y = (y << 1) | (x & 1)
@@ -311,7 +339,7 @@ def _bitrev(x, n):
 # bit of the polynomial has been stripped off.
 
 
-def _bytecrc(crc, poly, n):
+def _bytecrc(crc: int, poly: int, n: int) -> int:
     mask = 1 << (n - 1)
     for i in range(8):
         if crc & mask:
@@ -323,7 +351,7 @@ def _bytecrc(crc, poly, n):
     return crc
 
 
-def _bytecrc_r(crc, poly, n):
+def _bytecrc_r(crc: int, poly: int, n: int) -> int:
     for i in range(8):
         if crc & 1:
             crc = (crc >> 1) ^ poly
@@ -343,14 +371,14 @@ def _bytecrc_r(crc, poly, n):
 # have been checked for validity by the caller.
 
 
-def _mkTable(poly, n):
+def _mkTable(poly: int, n: int) -> list[int]:
     mask = (1 << n) - 1
     poly = poly & mask
     table = [_bytecrc(i << (n - 8), poly, n) for i in range(256)]
     return table
 
 
-def _mkTable_r(poly, n):
+def _mkTable_r(poly: int, n: int) -> list[int]:
     mask = (1 << n) - 1
     poly = _bitrev(poly & mask, n)
     table = [_bytecrc_r(i, poly, n) for i in range(256)]
@@ -360,12 +388,12 @@ def _mkTable_r(poly, n):
 # -----------------------------------------------------------------------------
 # Map the CRC size onto the functions that handle these sizes.
 
-_sizeMap = {
-    8: [_crcfun._crc8, _crcfun._crc8r],
-    16: [_crcfun._crc16, _crcfun._crc16r],
-    24: [_crcfun._crc24, _crcfun._crc24r],
-    32: [_crcfun._crc32, _crcfun._crc32r],
-    64: [_crcfun._crc64, _crcfun._crc64r],
+_sizeMap: dict[int, tuple[CrcFunNoDefaultArgs, CrcFunNoDefaultArgs]] = {
+    8: (_crcfun._crc8, _crcfun._crc8r),
+    16: (_crcfun._crc16, _crcfun._crc16r),
+    24: (_crcfun._crc24, _crcfun._crc24r),
+    32: (_crcfun._crc32, _crcfun._crc32r),
+    64: (_crcfun._crc64, _crcfun._crc64r),
 }
 
 # -----------------------------------------------------------------------------
@@ -374,7 +402,7 @@ _sizeMap = {
 # code to use for the platform we are running on.  This should properly adapt
 # to 32 and 64 bit machines.
 
-_sizeToTypeCode = {}
+_sizeToTypeCode: dict[int, str] = {}
 
 for typeCode in "B H I L Q".split():
     size = {1: 8, 2: 16, 4: 32, 8: 64}.get(struct.calcsize(typeCode), None)
@@ -391,7 +419,7 @@ del typeCode, size  # type: ignore
 # It returns the size of the CRC (in bits), and "sanitized" initial/final XOR values.
 
 
-def _verifyParams(poly, initCrc, xorOut):
+def _verifyParams(poly: int, initCrc: int, xorOut: int) -> tuple[int, int, int]:
     sizeBits = _verifyPoly(poly)
 
     mask = (1 << sizeBits) - 1
@@ -418,7 +446,9 @@ def _verifyParams(poly, initCrc, xorOut):
 # In addition to this function, a list containing the CRC table is returned.
 
 
-def _mkCrcFun(poly, sizeBits, initCrc, rev, xorOut):
+def _mkCrcFun(
+    poly: int, sizeBits: int, initCrc: int, rev: bool, xorOut: int
+) -> tuple[CrcFun, list[int]]:
     if rev:
         tableList = _mkTable_r(poly, sizeBits)
         _fun = _sizeMap[sizeBits][1]
@@ -426,18 +456,28 @@ def _mkCrcFun(poly, sizeBits, initCrc, rev, xorOut):
         tableList = _mkTable(poly, sizeBits)
         _fun = _sizeMap[sizeBits][0]
 
-    _table = tableList
+    _table: Sequence[int] = tableList
     if _usingExtension:
         _table = struct.pack(_sizeToTypeCode[sizeBits], *tableList)
 
     if xorOut == 0:
 
-        def crcfun(data, crc=initCrc, table=_table, fun=_fun):
+        def crcfun(
+            data: Buffer,
+            crc: int = initCrc,
+            table: Sequence[int] = _table,
+            fun: CrcFunNoDefaultArgs = _fun,
+        ) -> int:
             return fun(data, crc, table)
 
     else:
 
-        def crcfun(data, crc=initCrc, table=_table, fun=_fun):
+        def crcfun(
+            data: Buffer,
+            crc: int = initCrc,
+            table: Sequence[int] = _table,
+            fun: CrcFunNoDefaultArgs = _fun,
+        ) -> int:
             return xorOut ^ fun(data, xorOut ^ crc, table)
 
     return crcfun, tableList
