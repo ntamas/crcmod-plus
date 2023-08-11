@@ -37,8 +37,10 @@ classifiers = [
 dependencies = ["typing_extensions; python_version < '3.8'"]
 
 [project.urls]
-Repository = "https://github.com/ntamas/crcmod-plus"
 Changelog = "https://github.com/ntamas/crcmod-plus/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/ntamas/crcmod-plus#readme"
+Issues = "https://github.com/ntamas/crcmod-plus/issues"
+Source = "https://github.com/ntamas/crcmod-plus"
 
 [project.optional-dependencies]
 dev = ["pytest"]
