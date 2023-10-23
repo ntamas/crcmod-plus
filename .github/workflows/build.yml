@@ -51,7 +51,7 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-        if: ${{ matrix.os }} == 'ubuntu-20.04'
+        if: runner.os == 'Linux'
         with:
           platforms: arm64
 
