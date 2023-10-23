@@ -10,7 +10,7 @@ description = "CRC generator - modernized"
 readme = "README.md"
 requires-python = ">=3.7"
 maintainers = [{ name = "Tamas Nepusz", email = "tamas@sxd.hu" }]
-license = "MIT"
+license = { file = "LICENSE.txt" }
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
