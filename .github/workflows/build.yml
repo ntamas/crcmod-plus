@@ -38,7 +38,7 @@ jobs:
           tox
 
   wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
