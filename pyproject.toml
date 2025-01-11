@@ -45,7 +45,10 @@ Source = "https://github.com/ntamas/crcmod-plus"
 [project.optional-dependencies]
 dev = ["pytest"]
 
-[tool.ruff.extend-per-file-ignores]
+[tool.cibuildwheel]
+enable = ["cpython-freethreading"]
+
+[tool.ruff.lint.extend-per-file-ignores]
 "predefined.py" = ["E501"]
 
 [tool.setuptools.packages.find]

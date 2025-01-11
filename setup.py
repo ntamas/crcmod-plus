@@ -4,10 +4,12 @@ from sys import version_info
 import sysconfig
 from wheel.bdist_wheel import bdist_wheel
 
+
 def is_freethread():
     if sysconfig.get_config_var("Py_GIL_DISABLED"):
         return True
     return False
+
 
 # fmt: off
 can_use_limited_api = (
@@ -39,6 +41,7 @@ setup_args = dict(
     ext_modules=[
         Extension("crcmod._crcfunext", ["lib/_crcfunext.c"], **extension_kwargs)
     ],
+    package_dir={"": "src"},
     cmdclass={"bdist_wheel": bdist_wheel_abi3},
 )
 

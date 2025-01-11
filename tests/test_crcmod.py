@@ -22,7 +22,6 @@
 # -----------------------------------------------------------------------------
 """Unit tests for crcmod functionality"""
 
-
 import unittest
 
 from array import array

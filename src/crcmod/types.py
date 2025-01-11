@@ -38,8 +38,9 @@ Buffer = Union[str, bytes, bytearray, memoryview, array]
 class CrcFun(Protocol):
     """Type alias for CRC calculator functions created by this module."""
 
-    def __call__(self, data: Buffer, crc: int = ..., table: Sequence[int] = ...) -> int:
-        ...
+    def __call__(
+        self, data: Buffer, crc: int = ..., table: Sequence[int] = ...
+    ) -> int: ...
 
 
 CrcFunNoDefaultArgs = Callable[[Buffer, int, Sequence[int]], int]
