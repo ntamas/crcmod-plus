@@ -1,11 +1,11 @@
 from platform import python_implementation
 from setuptools import setup, Extension
 from sys import version_info
-import sys
+import sysconfig
 from wheel.bdist_wheel import bdist_wheel
 
 def is_freethread():
-    if hasattr(sys, "_is_gil_enabled") and not sys._is_gil_enabled():
+    if sysconfig.get_config_var("Py_GIL_DISABLED"):
         return True
     return False
 
