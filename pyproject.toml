@@ -10,29 +10,32 @@ description = "CRC generator - modernized"
 readme = "README.md"
 requires-python = ">=3.7"
 maintainers = [{ name = "Tamas Nepusz", email = "tamas@sxd.hu" }]
-license = { file = "LICENSE.txt" }
+license = "MIT"
+license-files = ["LICENSE.txt"]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Education",
-    "Intended Audience :: End Users/Desktop",
-    "Intended Audience :: Information Technology",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: C",
-    "Programming Language :: C++",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Topic :: Communications",
-    "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
-    "Topic :: Scientific/Engineering :: Mathematics",
-    "Topic :: Utilities",
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: End Users/Desktop",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: C",
+  "Programming Language :: C++",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Communications",
+  "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Utilities",
 ]
 dependencies = ["typing_extensions; python_version < '3.8'"]
 
@@ -61,7 +64,7 @@ crcmod = ["py.typed"]
 legacy_tox_ini = """
 [tox]
 min_version = 4.0
-env_list = py311, py310, py39, py38, py37, type
+env_list = py313, py312, py311, py310, py39, py38, py37, type
 
 [gh-actions]
 python =
@@ -69,7 +72,9 @@ python =
     3.8: py38
     3.9: py39
     3.10: py310
-    3.11: py311, type
+    3.11: py311
+    3.12: py312
+    3.13: py313, type
 
 [testenv]
 deps = pytest
