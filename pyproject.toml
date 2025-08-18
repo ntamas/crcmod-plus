@@ -8,7 +8,7 @@ version = "2.2.0"
 authors = [{ name = "Ray Buvel", email = "rlbuvel@gmail.com" }]
 description = "CRC generator - modernized"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 maintainers = [{ name = "Tamas Nepusz", email = "tamas@sxd.hu" }]
 license = "MIT"
 license-files = ["LICENSE.txt"]
@@ -24,8 +24,6 @@ classifiers = [
   "Programming Language :: C++",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -63,12 +61,10 @@ crcmod = ["py.typed"]
 legacy_tox_ini = """
 [tox]
 min_version = 4.0
-env_list = py313, py312, py311, py310, py39, py38, py37, type
+env_list = py313, py312, py311, py310, py39, type
 
 [gh-actions]
 python =
-    3.7: py37
-    3.8: py38
     3.9: py39
     3.10: py310
     3.11: py311
