@@ -62,7 +62,7 @@ crcmod = ["py.typed"]
 legacy_tox_ini = """
 [tox]
 min_version = 4.0
-env_list = py314, py313, py312, py311, py310, py39, type
+env_list = py314t, py314, py313t, py313, py312, py311, py310, py39, type
 
 [gh-actions]
 python =
@@ -71,9 +71,9 @@ python =
     3.11: py311
     3.12: py312
     3.13: py313
-    3.13t: py313
+    3.13t: py313t
     3.14: py314, type
-    3.14t: py314, type
+    3.14t: py314t
 
 [testenv]
 deps = pytest
