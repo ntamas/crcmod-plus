@@ -29,6 +29,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Communications",
   "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
   "Topic :: Scientific/Engineering :: Mathematics",
@@ -61,7 +62,7 @@ crcmod = ["py.typed"]
 legacy_tox_ini = """
 [tox]
 min_version = 4.0
-env_list = py313, py312, py311, py310, py39, type
+env_list = py314, py313, py312, py311, py310, py39, type
 
 [gh-actions]
 python =
@@ -69,7 +70,8 @@ python =
     3.10: py310
     3.11: py311
     3.12: py312
-    3.13: py313, type
+    3.13: py313
+    3.14: py314, type
 
 [testenv]
 deps = pytest
