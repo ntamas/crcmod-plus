@@ -71,7 +71,9 @@ python =
     3.11: py311
     3.12: py312
     3.13: py313
+    3.13t: py313
     3.14: py314, type
+    3.14t: py314, type
 
 [testenv]
 deps = pytest
