@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crcmod-plus"
-version = "2.3.0"
+version = "2.3.1"
 authors = [{ name = "Ray Buvel", email = "rlbuvel@gmail.com" }]
 description = "CRC generator - modernized"
 readme = "README.md"
