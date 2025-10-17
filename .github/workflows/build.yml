@@ -40,7 +40,8 @@ jobs:
 
       - name: Test with tox
         run: |
-          tox -e py`echo ${{ matrix.python-version }} | tr -d '.'` ${{ matrix.extra-tox-envs }}
+          tox -e py`echo ${{ matrix.python-version }} | tr -d '.'`
+          if [ -n "${{ matrix.extra.tox-envs }}" ]; then for env in '${{ matrix.extra-tox-envs }}'; do tox -e $env; done; fi
 
   wheels:
     name: Build wheels
