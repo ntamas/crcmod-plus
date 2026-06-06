@@ -29,7 +29,7 @@ from typing import Protocol
 __all__ = ("Buffer",)
 
 
-Buffer = Union[str, bytes, bytearray, memoryview, array[int]]
+Buffer = Union[str, bytes, bytearray, memoryview, "array[int]"]
 """Type alias for objects supported by the CRC functions as inputs."""
 
 
