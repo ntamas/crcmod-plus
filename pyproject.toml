@@ -48,6 +48,12 @@ dev = ["pytest"]
 [tool.cibuildwheel]
 enable = ["cpython-freethreading", "pypy"]
 
+[tool.ruff]
+target-version = "py39"
+
+[tool.ruff.lint]
+extend-select = ["UP035"]
+
 [tool.ruff.lint.extend-per-file-ignores]
 "predefined.py" = ["E501"]
 

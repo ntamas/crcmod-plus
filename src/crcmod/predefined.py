@@ -32,11 +32,10 @@ crcmod.predefined.Crc is an alias for crcmod.predefined.PredefinedCrc
 But if doing 'from crc.predefined import *', only PredefinedCrc is imported.
 """
 
+from typing import TypedDict
+
 # local imports
-import crcmod
-
-from typing import Any, Dict, List, Tuple
-
+from . import crcmod
 from .types import CrcFun
 
 __all__ = (
@@ -47,14 +46,20 @@ __all__ = (
 REVERSE = True
 NON_REVERSE = False
 
-# TODO(ntamas): migrate to TypedDict when we drop support for Python 3.7
-Definition = Dict[str, Any]
+class Definition(TypedDict):
+    name: str
+    identifier: str
+    poly: int
+    reverse: bool
+    init: int
+    xor_out: int
+    check: int
 
 # The following table defines the parameters of well-known CRC algorithms.
 # The "Check" value is the CRC for the ASCII byte sequence b"123456789". It
 # can be used for unit tests.
 # fmt: off
-_crc_definitions_table: List[Tuple[str, str, int, bool, int, int, int]] = [
+_crc_definitions_table: list[tuple[str, str, int, bool, int, int, int]] = [
 #       Name                Identifier-name,    Poly            Reverse         Init-value      XOR-out     Check
     (   'crc-8',            'Crc8',             0x107,          NON_REVERSE,    0x00,           0x00,       0xF4,       ),
     (   'crc-8-darc',       'Crc8Darc',         0x139,          REVERSE,        0x00,           0x00,       0x15,       ),
@@ -127,11 +132,11 @@ def _simplify_name(name: str) -> str:
     return name
 
 
-_crc_definitions_by_name: Dict[str, Definition] = {}
-_crc_definitions_by_identifier: Dict[str, Definition] = {}
-_crc_definitions: List[Definition] = []
+_crc_definitions_by_name: dict[str, Definition] = {}
+_crc_definitions_by_identifier: dict[str, Definition] = {}
+_crc_definitions: list[Definition] = []
 
-_crc_table_headings: List[str] = [
+_crc_table_headings: list[str] = [
     "name",
     "identifier",
     "poly",
@@ -141,14 +146,17 @@ _crc_table_headings: List[str] = [
     "check",
 ]
 
-for table_entry in _crc_definitions_table:
-    crc_definition: Definition = dict(zip(_crc_table_headings, table_entry))
+for name_str, identifier, poly, reverse, init, xor_out, check in _crc_definitions_table:
+    crc_definition = Definition(
+        name=name_str, identifier=identifier, poly=poly,
+        reverse=reverse, init=init, xor_out=xor_out, check=check,
+    )
     _crc_definitions.append(crc_definition)
-    name = _simplify_name(table_entry[0])
+    name = _simplify_name(name_str)
     if name in _crc_definitions_by_name:
         raise Exception("Duplicate entry for '{0}' in CRC table".format(name))
     _crc_definitions_by_name[name] = crc_definition
-    _crc_definitions_by_identifier[table_entry[1]] = crc_definition
+    _crc_definitions_by_identifier[identifier] = crc_definition
 
 
 def _get_definition_by_name(crc_name: str) -> Definition:

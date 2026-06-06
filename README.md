@@ -48,7 +48,7 @@ a model for the new version.
 
 ### Python version
 
-This package supports Python 3.7 and newer.
+This package supports Python 3.9 and newer.
 
 ### Building C extension
 
