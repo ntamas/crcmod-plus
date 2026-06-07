@@ -46,6 +46,7 @@ __all__ = (
 REVERSE = True
 NON_REVERSE = False
 
+
 class Definition(TypedDict):
     name: str
     identifier: str
@@ -54,6 +55,7 @@ class Definition(TypedDict):
     init: int
     xor_out: int
     check: int
+
 
 # The following table defines the parameters of well-known CRC algorithms.
 # The "Check" value is the CRC for the ASCII byte sequence b"123456789". It
@@ -148,8 +150,13 @@ _crc_table_headings: list[str] = [
 
 for name_str, identifier, poly, reverse, init, xor_out, check in _crc_definitions_table:
     crc_definition = Definition(
-        name=name_str, identifier=identifier, poly=poly,
-        reverse=reverse, init=init, xor_out=xor_out, check=check,
+        name=name_str,
+        identifier=identifier,
+        poly=poly,
+        reverse=reverse,
+        init=init,
+        xor_out=xor_out,
+        check=check,
     )
     _crc_definitions.append(crc_definition)
     name = _simplify_name(name_str)
