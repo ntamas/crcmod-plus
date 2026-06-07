@@ -22,19 +22,15 @@
 # -----------------------------------------------------------------------------
 """Unit tests for crcmod functionality"""
 
-import unittest
-
-from array import array
 import binascii
-
-from crcmod import mkCrcFun, Crc
-from crcmod.crcmod import _usingExtension
-from crcmod.predefined import PredefinedCrc
-from crcmod.predefined import mkPredefinedCrcFun
-from crcmod.predefined import _crc_definitions as _predefined_crc_definitions
-
+import unittest
+from array import array
 from functools import total_ordering
 
+from crcmod import Crc, mkCrcFun
+from crcmod.crcmod import _usingExtension
+from crcmod.predefined import PredefinedCrc, mkPredefinedCrcFun
+from crcmod.predefined import _crc_definitions as _predefined_crc_definitions
 
 # -----------------------------------------------------------------------------
 # This polynomial was chosen because it is the product of two irreducible

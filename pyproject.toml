@@ -52,7 +52,7 @@ enable = ["cpython-freethreading", "pypy"]
 target-version = "py39"
 
 [tool.ruff.lint]
-extend-select = ["UP035"]
+extend-select = ["I", "UP035"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "predefined.py" = ["E501"]

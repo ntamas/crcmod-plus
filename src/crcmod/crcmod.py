@@ -36,9 +36,8 @@ except ImportError:
     _usingExtension = False
 
 import struct
-
-from typing import IO, Optional
 from collections.abc import Sequence
+from typing import IO, Optional
 
 from .types import Buffer, CrcFun, CrcFunNoDefaultArgs
 

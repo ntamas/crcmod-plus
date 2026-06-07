@@ -1,7 +1,8 @@
-from platform import python_implementation
-from setuptools import setup, Extension
-from sys import version_info
 import sysconfig
+from platform import python_implementation
+from sys import version_info
+
+from setuptools import Extension, setup
 from wheel.bdist_wheel import bdist_wheel
 
 

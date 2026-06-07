@@ -21,10 +21,8 @@
 # -----------------------------------------------------------------------------
 
 from array import array
-from typing import Callable, Union
 from collections.abc import Sequence
-
-from typing import Protocol
+from typing import Callable, Protocol, Union
 
 __all__ = ("Buffer",)
 
