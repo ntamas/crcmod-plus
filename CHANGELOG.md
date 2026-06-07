@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.3.3
+
+- No user-facing changes. Version bump triggers a new release process
+  after the failure of `2.3.2` due to the deprecated `macos-13` image on
+  Github Actions.
+
 ## 2.3.2
 
 - No user-facing changes. Removed obsolete code that was needed only for
