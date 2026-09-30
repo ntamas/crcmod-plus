@@ -13,7 +13,18 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          ["3.9", "3.10", "3.11", "3.12", "3.13", "3.13t", "3.14", "3.14t"]
+          [
+            "3.9",
+            "3.10",
+            "3.11",
+            "3.12",
+            "3.13",
+            "3.13t",
+            "3.14",
+            "3.14t",
+            "3.15",
+            "3.15t",
+          ]
         include:
           - python-version: "3.14"
             extra-tox-envs: type
