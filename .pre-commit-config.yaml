@@ -1,5 +1,11 @@
 fail_fast: true
 repos:
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.21.2
+    hooks:
+      - id: pyupgrade
+        args: [--py39-plus]
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -7,7 +13,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.15.16
+    rev: v0.16.9
     hooks:
       - id: ruff-check
         args: [--fix, --exit-non-zero-on-fix]

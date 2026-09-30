@@ -17,4 +17,4 @@ from . import predefined  # Auto-import for drop-in compatibility with original 
 from ._version import __version__
 from .crcmod import Crc, mkCrcFun
 
-__all__ = ("Crc", "mkCrcFun", "__version__", "predefined")
+__all__ = ("Crc", "__version__", "mkCrcFun", "predefined")

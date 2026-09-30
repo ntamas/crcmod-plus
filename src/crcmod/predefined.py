@@ -129,8 +129,7 @@ def _simplify_name(name: str) -> str:
     name = name.lower()
     name = name.replace("-", "")
     name = name.replace(" ", "")
-    if name.startswith("crc"):
-        name = name[len("crc") :]
+    name = name.removeprefix("crc")
     return name
 
 
@@ -161,7 +160,7 @@ for name_str, identifier, poly, reverse, init, xor_out, check in _crc_definition
     _crc_definitions.append(crc_definition)
     name = _simplify_name(name_str)
     if name in _crc_definitions_by_name:
-        raise Exception("Duplicate entry for '{0}' in CRC table".format(name))
+        raise ValueError(f"Duplicate entry for '{name}' in CRC table")
     _crc_definitions_by_name[name] = crc_definition
     _crc_definitions_by_identifier[identifier] = crc_definition
 
@@ -171,7 +170,7 @@ def _get_definition_by_name(crc_name: str) -> Definition:
     if not definition:
         definition = _crc_definitions_by_identifier.get(crc_name, None)
     if not definition:
-        raise KeyError("Unkown CRC name '{0}'".format(crc_name))
+        raise KeyError(f"Unkown CRC name '{crc_name}'")
     return definition
 
 

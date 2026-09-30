@@ -7,9 +7,7 @@ from wheel.bdist_wheel import bdist_wheel
 
 
 def is_freethread():
-    if sysconfig.get_config_var("Py_GIL_DISABLED"):
-        return True
-    return False
+    return bool(sysconfig.get_config_var("Py_GIL_DISABLED"))
 
 
 # fmt: off
@@ -38,12 +36,12 @@ if can_use_limited_api:
         define_macros=[("Py_LIMITED_API", "0x030b0000")], py_limited_api=True
     )
 
-setup_args = dict(
-    ext_modules=[
+setup_args = {
+    "ext_modules": [
         Extension("crcmod._crcfunext", ["lib/_crcfunext.c"], **extension_kwargs)
     ],
-    package_dir={"": "src"},
-    cmdclass={"bdist_wheel": bdist_wheel_abi3},
-)
+    "package_dir": {"": "src"},
+    "cmdclass": {"bdist_wheel": bdist_wheel_abi3},
+}
 
 setup(**setup_args)  # type: ignore

@@ -22,10 +22,13 @@
 # -----------------------------------------------------------------------------
 """Unit tests for crcmod functionality"""
 
+from __future__ import annotations
+
 import binascii
 import unittest
 from array import array
 from functools import total_ordering
+from typing import Callable, ClassVar
 
 from crcmod import Crc, mkCrcFun
 from crcmod.crcmod import _usingExtension
@@ -242,7 +245,7 @@ class poly:
         return self.__divmod__(other)[1]
 
     def __repr__(self):
-        return "poly(0x%XL)" % self.p
+        return f"poly(0x{self.p:X}L)"
 
     def __str__(self):
         p = self.p
@@ -253,7 +256,7 @@ class poly:
         n = 2
         while p:
             if p & 1:
-                lst.append("x^%d" % n)
+                lst.append(f"x^{n}")
             p = p >> 1
             n += 1
         lst.reverse()
@@ -352,12 +355,12 @@ def crc64bp(d):
 
 
 class KnownAnswerTests(unittest.TestCase):
-    test_messages = [
+    test_messages: ClassVar[list[bytes]] = [
         b"T",
         b"CatMouse987654321",
     ]
 
-    known_answers = [
+    known_answers: ClassVar[list[list[tuple[int, ...]]]] = [
         [(g8, 0, 0), (0xFE, 0x9D)],
         [(g8, -1, 1), (0x4F, 0x9B)],
         [(g8, 0, 1), (0xFE, 0x62)],
@@ -379,38 +382,35 @@ class KnownAnswerTests(unittest.TestCase):
             self.assertEqual(
                 crcfun(b"", 0),
                 0,
-                "Wrong answer for CRC parameters %s, input ''" % (crcfun_params,),
+                f"Wrong answer for CRC parameters {crcfun_params}, input ''",
             )
             for i, msg in enumerate(self.test_messages):
                 self.assertEqual(
                     crcfun(msg),
                     v[i],
-                    "Wrong answer for CRC parameters %s, input '%s'"
-                    % (crcfun_params, msg),
+                    f"Wrong answer for CRC parameters {crcfun_params}, input '{msg}'",
                 )
                 self.assertEqual(
                     crcfun(msg[4:], crcfun(msg[:4])),
                     v[i],
-                    "Wrong answer for CRC parameters %s, input '%s'"
-                    % (crcfun_params, msg),
+                    f"Wrong answer for CRC parameters {crcfun_params}, input '{msg}'",
                 )
                 self.assertEqual(
                     crcfun(msg[-1:], crcfun(msg[:-1])),
                     v[i],
-                    "Wrong answer for CRC parameters %s, input '%s'"
-                    % (crcfun_params, msg),
+                    f"Wrong answer for CRC parameters {crcfun_params}, input '{msg}'",
                 )
 
 
 class CompareReferenceCrcTest(unittest.TestCase):
-    test_messages = [
+    test_messages: ClassVar[list[bytes]] = [
         b"",
         b"T",
         b"123456789",
         b"CatMouse987654321",
     ]
 
-    test_poly_crcs = [
+    test_poly_crcs: ClassVar[list[tuple[tuple[int, ...], Callable[[bytes], int]]]] = [
         [(g8, 0, 0), crc8p],
         [(g16, 0, 0), crc16p],
         [(g24, 0, 0), crc24p],
@@ -533,13 +533,13 @@ crcValue = 0x00000000"""
 class PredefinedCrcTest(unittest.TestCase):
     """Verify the predefined CRCs"""
 
-    test_messages_for_known_answers = [
+    test_messages_for_known_answers: ClassVar[list[bytes]] = [
         b"",  # Test cases below depend on this first entry being the empty string.
         b"T",
         b"CatMouse987654321",
     ]
 
-    known_answers = [
+    known_answers: ClassVar[list[list[str | tuple[int, ...]]]] = [
         ["crc-aug-ccitt", (0x1D0F, 0xD6ED, 0x5637)],
         ["x-25", (0x0000, 0xE4D9, 0x0A91)],
         ["crc-32", (0x00000000, 0xBE047A60, 0x084BFF58)],
@@ -549,23 +549,23 @@ class PredefinedCrcTest(unittest.TestCase):
         for crcfun_name, v in self.known_answers:
             crcfun = mkPredefinedCrcFun(crcfun_name)
             self.assertEqual(
-                crcfun(b"", 0), 0, "Wrong answer for CRC '%s', input ''" % crcfun_name
+                crcfun(b"", 0), 0, f"Wrong answer for CRC '{crcfun_name}', input ''"
             )
             for i, msg in enumerate(self.test_messages_for_known_answers):
                 self.assertEqual(
                     crcfun(msg),
                     v[i],
-                    "Wrong answer for CRC %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong answer for CRC {crcfun_name}, input '{msg}'",
                 )
                 self.assertEqual(
                     crcfun(msg[4:], crcfun(msg[:4])),
                     v[i],
-                    "Wrong answer for CRC %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong answer for CRC {crcfun_name}, input '{msg}'",
                 )
                 self.assertEqual(
                     crcfun(msg[-1:], crcfun(msg[:-1])),
                     v[i],
-                    "Wrong answer for CRC %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong answer for CRC {crcfun_name}, input '{msg}'",
                 )
 
     def test_class_with_known_answers(self):
@@ -576,7 +576,7 @@ class PredefinedCrcTest(unittest.TestCase):
                 self.assertEqual(
                     crc1.crcValue,
                     v[i],
-                    "Wrong answer for crc1 %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong answer for crc1 {crcfun_name}, input '{msg}'",
                 )
 
                 crc2 = crc1.new()
@@ -584,7 +584,7 @@ class PredefinedCrcTest(unittest.TestCase):
                 self.assertEqual(
                     crc1.crcValue,
                     v[i],
-                    "Wrong state for crc1 %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong state for crc1 {crcfun_name}, input '{msg}'",
                 )
                 # Check that the new class instance created by .new() contains
                 # the initialisation value. This depends on the first string in
@@ -592,7 +592,7 @@ class PredefinedCrcTest(unittest.TestCase):
                 self.assertEqual(
                     crc2.crcValue,
                     v[0],
-                    "Wrong state for crc2 %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong state for crc2 {crcfun_name}, input '{msg}'",
                 )
 
                 crc2.update(msg)
@@ -601,13 +601,13 @@ class PredefinedCrcTest(unittest.TestCase):
                 self.assertEqual(
                     crc1.crcValue,
                     v[i],
-                    "Wrong state for crc1 %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong state for crc1 {crcfun_name}, input '{msg}'",
                 )
                 # Check that crc2 contains the right value after calling .update()
                 self.assertEqual(
                     crc2.crcValue,
                     v[i],
-                    "Wrong state for crc2 %s, input '%s'" % (crcfun_name, msg),
+                    f"Wrong state for crc2 {crcfun_name}, input '{msg}'",
                 )
 
     def test_function_predefined_table(self):
@@ -618,7 +618,7 @@ class PredefinedCrcTest(unittest.TestCase):
             self.assertEqual(
                 calc_value,
                 table_entry["check"],
-                "Wrong answer for CRC '%s'" % table_entry["name"],
+                f"Wrong answer for CRC '{table_entry['name']}'",
             )
 
     def test_class_predefined_table(self):
@@ -629,7 +629,7 @@ class PredefinedCrcTest(unittest.TestCase):
             self.assertEqual(
                 crc1.crcValue,
                 table_entry["check"],
-                "Wrong answer for CRC '%s'" % table_entry["name"],
+                f"Wrong answer for CRC '{table_entry['name']}'",
             )
 
 
@@ -638,13 +638,13 @@ class InputTypesTest(unittest.TestCase):
 
     msg = b"CatMouse987654321"
 
-    check_crc_names = [
+    check_crc_names: ClassVar[list[str]] = [
         "crc-aug-ccitt",
         "x-25",
         "crc-32",
     ]
 
-    array_check_types = [
+    array_check_types: ClassVar[list[str]] = [
         "B",
         "H",
         "I",

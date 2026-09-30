@@ -21,7 +21,9 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
-__all__ = ("mkCrcFun", "Crc")
+from __future__ import annotations
+
+__all__ = ("Crc", "mkCrcFun")
 
 # Select the appropriate set of low-level CRC functions for this installation.
 # If the extension module was not built, drop back to the Python implementation
@@ -37,7 +39,7 @@ except ImportError:
 
 import struct
 from collections.abc import Sequence
-from typing import IO, Optional
+from typing import IO
 
 from .types import Buffer, CrcFun, CrcFunNoDefaultArgs
 
@@ -119,15 +121,15 @@ class Crc:
 
     def __str__(self) -> str:
         lst: list[str] = []
-        lst.append("poly = 0x%X" % self.poly)
-        lst.append("reverse = %s" % self.reverse)
-        fmt = "0x%%0%dX" % (self.digest_size * 2)
+        lst.append(f"poly = 0x{self.poly:X}")
+        lst.append(f"reverse = {self.reverse}")
+        fmt = f"0x%0{self.digest_size * 2}X"
         lst.append("initCrc  = %s" % (fmt % self.initCrc))
         lst.append("xorOut   = %s" % (fmt % self.xorOut))
         lst.append("crcValue = %s" % (fmt % self.crcValue))
         return "\n".join(lst)
 
-    def new(self, arg: Optional[Buffer] = None) -> "Crc":
+    def new(self, arg: Buffer | None = None) -> Crc:
         """Create a new instance of the Crc class initialized to the same
         values as the original instance.  The current CRC is set to the initial
         value.  If a string is provided in the optional arg parameter, it is
@@ -146,7 +148,7 @@ class Crc:
             n.update(arg)
         return n
 
-    def copy(self) -> "Crc":
+    def copy(self) -> Crc:
         """Create a new instance of the Crc class initialized to the same
         values as the original instance.  The current CRC is set to the current
         value.  This allows multiple CRC calculations using a common initial
@@ -194,8 +196,8 @@ class Crc:
         self,
         functionName: str,
         out: IO[str],
-        dataType: Optional[str] = None,
-        crcType: Optional[str] = None,
+        dataType: str | None = None,
+        crcType: str | None = None,
     ) -> None:
         """Generate a C/C++ function.
 
@@ -218,7 +220,7 @@ class Crc:
             size = 8 * self.digest_size
             if size == 24:
                 size = 32
-            crcType = "UINT%d" % size
+            crcType = f"UINT{size}"
 
         if self.digest_size == 1:
             # Both 8-bit CRC algorithms are the same
@@ -231,9 +233,9 @@ class Crc:
             # The forward CRC algorithms larger than 8 bits have an extra shift
             # operation to get the high byte.
             shift = 8 * (self.digest_size - 1)
-            crcAlgor = "table[*data ^ (%%s)(crc >> %d)] ^ (crc << 8)" % shift
+            crcAlgor = f"table[*data ^ (%s)(crc >> {shift})] ^ (crc << 8)"
 
-        fmt = "0x%%0%dX" % (2 * self.digest_size)
+        fmt = f"0x%0{2 * self.digest_size}X"
         if self.digest_size <= 4:
             fmt = fmt + "U,"
         else:
@@ -249,7 +251,7 @@ class Crc:
                 lst.append("\n    ")
             lst.append(fmt % val)
 
-        poly = "polynomial: 0x%X" % self.poly
+        poly = f"polynomial: 0x{self.poly:X}"
         if self.reverse:
             poly = poly + ", bit reverse algorithm"
 
@@ -404,10 +406,10 @@ _sizeMap: dict[int, tuple[CrcFunNoDefaultArgs, CrcFunNoDefaultArgs]] = {
 
 _sizeToTypeCode: dict[int, str] = {}
 
-for typeCode in "B H I L Q".split():
+for typeCode in ["B", "H", "I", "L", "Q"]:
     size = {1: 8, 2: 16, 4: 32, 8: 64}.get(struct.calcsize(typeCode), None)
     if size is not None and size not in _sizeToTypeCode:
-        _sizeToTypeCode[size] = "256%s" % typeCode
+        _sizeToTypeCode[size] = f"256{typeCode}"
 
 _sizeToTypeCode[24] = _sizeToTypeCode[32]
 
