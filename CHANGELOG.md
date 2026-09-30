@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.3.4
+
+- Added Windows ARM64 builds in CI, thanks to [@ndabas](https://github.com/ndabas).
+
+- Modernized codebase, removing old syntax that was needed for pre-3.9
+  compatibility only.
+
+- Updated `ruff`; code now passes clean on `ruff` 0.16.9.
+
 ## 2.3.3
 
 - No user-facing changes. Version bump triggers a new release process
