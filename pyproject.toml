@@ -47,6 +47,11 @@ dev = ["pytest"]
 
 [tool.cibuildwheel]
 enable = ["cpython-freethreading", "pypy"]
+test-requires = ["pytest"]
+test-command = [
+  'python -c "import crcmod.crcmod as m; assert m._usingExtension"',
+  "pytest {project}/tests",
+]
 
 [tool.ruff]
 target-version = "py39"
