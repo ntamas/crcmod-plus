@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2.3.5
 
+### Changed
+
 - No user-facing changes. Fixing CI infra.
 
 ## 2.3.4
+
+### Changed
 
 - Added Windows ARM64 builds in CI, thanks to [@ndabas](https://github.com/ndabas).
 
@@ -20,11 +24,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2.3.3
 
+### Changed
+
 - No user-facing changes. Version bump triggers a new release process
   after the failure of `2.3.2` due to the deprecated `macos-13` image on
   Github Actions.
 
 ## 2.3.2
+
+### Changed
 
 - No user-facing changes. Removed obsolete code that was needed only for
   Python <3.9, thanks to [@alexrudd2](https://github.com/alexrudd2) in
