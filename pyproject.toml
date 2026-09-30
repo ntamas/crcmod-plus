@@ -46,7 +46,7 @@ Source = "https://github.com/ntamas/crcmod-plus"
 dev = ["pytest"]
 
 [tool.cibuildwheel]
-enable = ["cpython-freethreading", "pypy"]
+enable = ["pypy"]
 test-requires = ["pytest"]
 test-command = [
   'python -c "import crcmod.crcmod as m; assert m._usingExtension"',
